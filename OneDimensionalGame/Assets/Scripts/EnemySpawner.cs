@@ -38,6 +38,8 @@ public class EnemySpawner : MonoBehaviour
 				{
 					creep.GetComponent<Enemy>().direction = 1f;
 					creep.layer = 10;
+					creep.GetComponent<MeshRenderer>().material = creep.GetComponent<Enemy>().blueMat;
+					creep.GetComponent<Enemy>().teamNum = 0;
 				}
 				break;
 			
@@ -50,6 +52,8 @@ public class EnemySpawner : MonoBehaviour
 				{
 					creep.GetComponent<Enemy>().direction = -1f;
 					creep.layer = 11;
+					creep.GetComponent<MeshRenderer>().material = creep.GetComponent<Enemy>().pinkMat;
+					creep.GetComponent<Enemy>().teamNum = 1;
 				}
 				break;
 			

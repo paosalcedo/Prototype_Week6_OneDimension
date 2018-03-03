@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
 	public float damage;
 
 	public float direction;
+	public int teamNum;
+	public Material pinkMat;
+	public Material blueMat;
 	
 	// Use this for initialization
 	void Start () {
@@ -20,6 +23,18 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 		transform.Translate(transform.right * speed * direction * Time.deltaTime);
+	}
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.GetComponent<Bullet>() != null || other.gameObject.GetComponent<Enemy>() != null)
+		{
+			if (other.GetComponent<Enemy>().teamNum != teamNum)
+			{
+				Destroy(other.gameObject);
+				Destroy(gameObject);
+			}
+		}
 	}
 
 }

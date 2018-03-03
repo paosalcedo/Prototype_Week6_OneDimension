@@ -10,8 +10,8 @@ public class LinePlayer : MonoBehaviour
 	private Player player;
 	public int playerId;
 	[SerializeField] private float speed;
-	
 	private bool i_move;
+	
 
 	private bool i_action;
 	// Use this for initialization
@@ -156,6 +156,7 @@ public class LinePlayer : MonoBehaviour
 			bullet.GetComponent<Bullet>().direction = direction;
 //			bullet.GetComponent<MeshRenderer>()
 			bullet.GetComponent<MeshRenderer>().material = bullet.GetComponent<Bullet>().pinkMat;
+			bullet.GetComponent<Bullet>().teamNum = 1;
 		}
 		
 		if(playerId == 0)
@@ -164,6 +165,7 @@ public class LinePlayer : MonoBehaviour
 			bullet.GetComponent<Bullet>().direction = direction;
 //			bullet.GetComponent<MeshRenderer>()
 			bullet.GetComponent<MeshRenderer>().material = bullet.GetComponent<Bullet>().blueMat;
+			bullet.GetComponent<Bullet>().teamNum = 0;
 		}
 	}
 
