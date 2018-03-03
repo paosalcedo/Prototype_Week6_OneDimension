@@ -6,9 +6,12 @@ public class Bullet : MonoBehaviour
 {
 	public float direction;
 	[SerializeField]private float speed;
+
+	public Material blueMat;
+	public Material pinkMat;
 	// Use this for initialization
 	void Start () {
-		
+		Destroy(gameObject, 0.25f);
 	}
 	
 	// Update is called once per frame

@@ -9,7 +9,6 @@ public class LinePlayer : MonoBehaviour
 {
 	private Player player;
 	public int playerId;
-
 	[SerializeField] private float speed;
 	
 	private bool i_move;
@@ -151,8 +150,21 @@ public class LinePlayer : MonoBehaviour
 
 	public void SpawnBullet(float direction)
 	{
-		GameObject bullet = Instantiate(Resources.Load("Prefabs/bullet"), transform.position, Quaternion.identity) as GameObject;
-		bullet.GetComponent<Bullet>().direction = direction;
+		if (playerId == 1)
+		{
+			GameObject bullet = Instantiate(Resources.Load("Prefabs/bullet"), transform.position, Quaternion.identity) as GameObject;
+			bullet.GetComponent<Bullet>().direction = direction;
+//			bullet.GetComponent<MeshRenderer>()
+			bullet.GetComponent<MeshRenderer>().material = bullet.GetComponent<Bullet>().pinkMat;
+		}
+		
+		if(playerId == 0)
+		{
+			GameObject bullet = Instantiate(Resources.Load("Prefabs/bullet"), transform.position, Quaternion.identity) as GameObject;
+			bullet.GetComponent<Bullet>().direction = direction;
+//			bullet.GetComponent<MeshRenderer>()
+			bullet.GetComponent<MeshRenderer>().material = bullet.GetComponent<Bullet>().blueMat;
+		}
 	}
 
 }

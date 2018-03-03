@@ -46,7 +46,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4476851162930916
 Transform:
   m_ObjectHideFlags: 1
@@ -68,7 +68,7 @@ Transform:
   m_GameObject: {fileID: 1054033846244020}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.6, y: 0, z: 0}
-  m_LocalScale: {x: 0.2231708, y: 0.22317076, z: 1}
+  m_LocalScale: {x: 0.2231708, y: 0.22317076, z: 1.25}
   m_Children:
   - {fileID: 4476851162930916}
   m_Father: {fileID: 0}
@@ -80,7 +80,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1054033846244020}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -88,7 +88,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 2b253cfaff0c1c2409eb59a898382dc1, type: 2}
+  - {fileID: 2100000, guid: 837d621d853a9cf4da523bfb78893da4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -191,3 +191,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   speed: 20
+  blueMat: {fileID: 2100000, guid: 837d621d853a9cf4da523bfb78893da4, type: 2}
+  pinkMat: {fileID: 2100000, guid: ffeb51f66b68b8a4ca66ea0cceceb526, type: 2}
