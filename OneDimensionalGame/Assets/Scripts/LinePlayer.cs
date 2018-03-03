@@ -64,7 +64,15 @@ public class LinePlayer : MonoBehaviour
 //			moveVector.x = 0;
 //			moveVector.y = -player.GetAxis("Move");
 //		} 
-		moveVector.x = player.GetAxis("Move");
+		if (playerId == 0)
+		{
+			moveVector.x = player.GetAxis("Move");
+		}
+
+		else if (playerId == 1)
+		{
+			moveVector.x = player.GetAxis("P2 Move");
+		}
 
 		switch (moveState)
 		{
@@ -90,13 +98,44 @@ public class LinePlayer : MonoBehaviour
 
 	void ProcessInput()
 	{
-		transform.Translate(moveVector * speed * Time.deltaTime);
-		if (i_action)
+		if (playerId == 0)
 		{
-//			Debug.Log(light.spotAngle);
-			light.spotAngle = 30;
-			StartCoroutine(ReturnToNormalLength());
+			transform.Translate(moveVector * speed * Time.deltaTime);
+			if (i_action)
+			{
+	//			Debug.Log(light.spotAngle);
+				light.spotAngle = 18;
+				StartCoroutine(ReturnToNormalLength());
+				if (moveVector.x >= 0)
+				{
+					SpawnBullet(1);			
+				}
+				else
+				{
+					SpawnBullet(-1);
+				}
+			}			
 		}
+
+		if (playerId == 1)
+		{
+			transform.Translate(moveVector * speed * Time.deltaTime);
+			if (player.GetButtonDown("P2 Action"))
+			{
+	//			Debug.Log(light.spotAngle);
+				light.spotAngle = 18;
+				StartCoroutine(ReturnToNormalLength());
+				if (moveVector.x <= 0)
+				{
+					SpawnBullet(-1);			
+				}
+				else
+				{
+					SpawnBullet(1);
+				}
+			}			
+		}
+
 
 		if (Input.GetKeyDown(KeyCode.R))
 		{
@@ -110,119 +149,11 @@ public class LinePlayer : MonoBehaviour
 		light.spotAngle = 9;
 	}
 
-	private bool isMovingRight;
-	void OnTriggerEnter(Collider trigger)
+	public void SpawnBullet(float direction)
 	{
- //		if (trigger.gameObject.layer == 8)
-//		{
-//			if (moveState == MoveState.Horizontal)
-//			{
-// //				if (moveVector.x < 0)
-////				{
-////					transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z+newRotation);				
-////				} else if (moveVector.x >= 0)
-////				{
-////					transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z-newRotation);								
-////				}
-//
-// 				moveState = MoveState.Vertical;
-//			} else if (moveState == MoveState.Vertical)
-//			{
-// //				if (moveVector.x < 0)
-////				{
-////					transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z+newRotation);				
-////				} else if (moveVector.x >= 0)
-////				{
-////					transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z-newRotation);								
-////				}
-// 				moveState = MoveState.Horizontal;
-//			}
-//		}
-		
-		if (trigger.gameObject.layer == 8)
-		{
-			if (moveState == MoveState.Horizontal)
-			{
-				if (moveVector.x >= 0)
-				{
-					if (transform.position.x >= 0)
-					{
-						moveState = MoveState.Vertical;									
-					}
-					else
-					{
-						moveState = MoveState.InvVertical;
-					}
-
-				} else if (moveVector.x < 0)
-				{
-					if (transform.position.x >= 0)
-					{
-						moveState = MoveState.InvVertical;									
-					}
-					else
-					{
-						moveState = MoveState.Vertical;
-					}
-				}
-			} else if (moveState == MoveState.Vertical)
-			{ 
-				if (moveVector.x >= 0) //moving forward on the line
-				{
-					if (transform.position.x >= 0) //right side
-					{
-						moveState = MoveState.InvHorizontal;									
-					}
-					else
-					{
-						moveState = MoveState.Horizontal;									
-					}
-
-				} else if (moveVector.x < 0) //moving backwards along the line
-				{
-//					moveState = MoveState.Horizontal;
-					if (transform.position.x >= 0) // on the right side of the screen
-					{
-						moveState = MoveState.Horizontal;									
-					}
-					else
-					{
-						moveState = MoveState.InvHorizontal;									
-					}
-				}			
-			} else if (moveState == MoveState.InvHorizontal)
-			{
-				if (moveVector.x >= 0)
-				{
-					if (transform.position.x >= 0)
-					{
-						moveState = MoveState.InvVertical;						
-					} else if (transform.position.x < 0)
-					{
-						moveState = MoveState.Vertical;						
-					}			
-				} else if (moveVector.x < 0)
-				{
-					if (transform.position.x >= 0)
-					{
-						moveState = MoveState.Vertical;						
-					} else if (transform.position.x < 0)
-					{
-						moveState = MoveState.InvVertical;						
-					}
-				}
-			} else if (moveState == MoveState.InvVertical)
-			{ 
-				if (moveVector.x >= 0)
-				{
-					moveState = MoveState.InvHorizontal;				
-				} else if (moveVector.x < 0)
-				{
-					moveState = MoveState.Horizontal;
-				}			
-			}
-		} 
-	} 
+		GameObject bullet = Instantiate(Resources.Load("Prefabs/bullet"), transform.position, Quaternion.identity) as GameObject;
+		bullet.GetComponent<Bullet>().direction = direction;
+	}
 
 }
 

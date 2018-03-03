@@ -15,8 +15,8 @@ TagManager:
   - 
   - DirectionChanger
   - OppositeDirectionChanger
-  - 
-  - 
+  - LeftCreep
+  - RightCreep
   - 
   - 
   - 
