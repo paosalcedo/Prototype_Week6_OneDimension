@@ -67,8 +67,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1054033846244020}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.6, y: 0, z: 0}
-  m_LocalScale: {x: 0.52, y: 0.1, z: 1.25}
+  m_LocalPosition: {x: 10.6, y: 0, z: 0}
+  m_LocalScale: {x: 0.52, y: 0.2231708, z: 1.25}
   m_Children:
   - {fileID: 4476851162930916}
   m_Father: {fileID: 0}
@@ -190,8 +190,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 0
+  damage: 5
   speed: 10
-  lifeTime: 5
+  lifeTime: 0.25
   teamNum: 0
   blueMat: {fileID: 2100000, guid: 837d621d853a9cf4da523bfb78893da4, type: 2}
   pinkMat: {fileID: 2100000, guid: ffeb51f66b68b8a4ca66ea0cceceb526, type: 2}
+  myTeam: 0

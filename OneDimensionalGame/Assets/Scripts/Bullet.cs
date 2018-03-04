@@ -6,15 +6,26 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
 	public float direction;
+	public float damage;
 	[SerializeField]private float speed;
 	[SerializeField] private float lifeTime;
 
 	public int teamNum;
 	public Material blueMat;
 	public Material pinkMat;
+
+	public Team myTeam;
 	// Use this for initialization
 	void Start () {
 		Destroy(gameObject, lifeTime);
+		if (teamNum == 0)
+		{
+			myTeam = Team.Left;
+		}
+		else
+		{
+			myTeam = Team.Right;
+		}
 	}
 	
 	// Update is called once per frame

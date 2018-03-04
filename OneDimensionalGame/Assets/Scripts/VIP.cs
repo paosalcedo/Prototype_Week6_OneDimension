@@ -16,9 +16,8 @@ public class VIP : MonoBehaviour
 	{
 		myScale = transform.localScale;
 		health = 100f;
-		scaleLoss = myScale.x / 10;
-		Debug.Log(scaleLoss);
-	}
+		scaleLoss = myScale.x / 20;
+ 	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -50,6 +49,20 @@ public class VIP : MonoBehaviour
 				}
 			}
 
+		}
+		else
+		{
+			if (other.gameObject.GetComponent<Bullet>() != null)
+			{
+				Bullet bullet = other.gameObject.GetComponent<Bullet>();
+				if (bullet.myTeam != myTeam)
+				{
+					health -= other.gameObject.GetComponent<Bullet>().damage;
+					myScale.x -= scaleLoss;	
+					transform.localScale = new Vector3(myScale.x, myScale.y, myScale.z);
+					Destroy(other.gameObject);		
+				}
+			}
 		}
 	}
 }

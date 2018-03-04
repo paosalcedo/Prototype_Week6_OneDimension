@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.GetComponent<Bullet>() != null || other.gameObject.GetComponent<Enemy>() != null)
+		if (other.gameObject.GetComponent<Enemy>() != null)
 		{
 			if (other.GetComponent<Enemy>().teamNum != teamNum)
 			{

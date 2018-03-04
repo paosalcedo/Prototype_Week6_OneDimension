@@ -17,10 +17,10 @@ TagManager:
   - OppositeDirectionChanger
   - LeftCreep
   - RightCreep
-  - 
-  - 
-  - 
-  - 
+  - LeftBases
+  - RightBases
+  - LeftPlayer
+  - RightPlayer
   - 
   - 
   - 

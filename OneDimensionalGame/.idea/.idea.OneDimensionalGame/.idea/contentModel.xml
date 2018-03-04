@@ -271,8 +271,8 @@
           <e p="Bullet.cs" t="Include" />
           <e p="Enemy.cs" t="Include" />
           <e p="EnemySpawner.cs" t="Include" />
-          <e p="Gun.cs" t="Include" />
           <e p="LinePlayer.cs" t="Include" />
+          <e p="PlayerSpawner.cs" t="Include" />
           <e p="Portal.cs" t="Include" />
           <e p="Teams.cs" t="Include" />
           <e p="VIP.cs" t="Include" />

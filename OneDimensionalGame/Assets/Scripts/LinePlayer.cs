@@ -9,13 +9,21 @@ public class LinePlayer : MonoBehaviour
 {
 	private Player player;
 	public int playerId;
+	[SerializeField] private float health;
 	[SerializeField] private float speed;
-	private bool i_move;
-	
+	private float scaleLoss;
+	private Vector3 myScale;
+	private Vector3 originalScale;
+	private Vector3 spawnPos;
 
+	private bool i_move;
+	[SerializeField] private float gunCooldown = 0;
+	[SerializeField] private float gunTimer = 0;
+	public Material[] mats;
 	private bool i_action;
 	// Use this for initialization
-	private Light light;
+//	private Light light;
+
  	
 	private Vector3 moveVector;
 
@@ -35,9 +43,23 @@ public class LinePlayer : MonoBehaviour
 
 	void Start()
 	{
-//		Cursor.visible = false;
-//		Cursor.lockState = CursorLockMode.Locked;
-		light = GetComponentInChildren<Light>();
+		if (playerId == 0)
+		{
+			gameObject.layer = 14;
+		}
+		else
+		{
+			gameObject.layer = 15;
+		}
+
+		spawnPos = transform.position;
+		myScale = transform.localScale;
+		originalScale = transform.localScale;
+		scaleLoss = myScale.x / 10;
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+//		light = GetComponentInChildren<Light>();
+		
 	}
 
 	// Update is called once per frame
@@ -95,23 +117,38 @@ public class LinePlayer : MonoBehaviour
 		i_action = player.GetButtonDown("Action");
 	}
 
+	private bool hasFired = false;
 	void ProcessInput()
 	{
+
+		if (hasFired)
+		{
+			gunTimer += Time.deltaTime;
+			if (gunTimer >= gunCooldown)
+			{
+				hasFired = false;
+			}
+		}
+
 		if (playerId == 0)
 		{
 			transform.Translate(moveVector * speed * Time.deltaTime);
 			if (i_action)
 			{
 	//			Debug.Log(light.spotAngle);
-				light.spotAngle = 18;
-				StartCoroutine(ReturnToNormalLength());
-				if (moveVector.x >= 0)
+//				light.spotAngle = 12;
+//				StartCoroutine(ReturnToNormalLength());
+				if (moveVector.x >= 0 && !hasFired)
 				{
-					SpawnBullet(1);			
+					SpawnBullet(1);
+					hasFired = true;
+					gunTimer = 0;
 				}
-				else
+				else if(moveVector.x < 0 && !hasFired)
 				{
 					SpawnBullet(-1);
+					hasFired = true;
+					gunTimer = 0;
 				}
 			}			
 		}
@@ -122,15 +159,19 @@ public class LinePlayer : MonoBehaviour
 			if (player.GetButtonDown("P2 Action"))
 			{
 	//			Debug.Log(light.spotAngle);
-				light.spotAngle = 18;
-				StartCoroutine(ReturnToNormalLength());
-				if (moveVector.x <= 0)
+//				light.spotAngle = 12;
+//				StartCoroutine(ReturnToNormalLength());
+				if (moveVector.x <= 0 && !hasFired)
 				{
-					SpawnBullet(-1);			
+					SpawnBullet(-1);
+					hasFired = true;
+					gunTimer = 0;
 				}
-				else
+				else if(moveVector.x > 0 && !hasFired)
 				{
 					SpawnBullet(1);
+					hasFired = true;
+					gunTimer = 0;
 				}
 			}			
 		}
@@ -145,7 +186,7 @@ public class LinePlayer : MonoBehaviour
 	IEnumerator ReturnToNormalLength()
 	{
 		yield return new WaitForSeconds(0.5f);
-		light.spotAngle = 9;
+//		light.spotAngle = 9;
 	}
 
 	public void SpawnBullet(float direction)
@@ -166,6 +207,41 @@ public class LinePlayer : MonoBehaviour
 //			bullet.GetComponent<MeshRenderer>()
 			bullet.GetComponent<MeshRenderer>().material = bullet.GetComponent<Bullet>().blueMat;
 			bullet.GetComponent<Bullet>().teamNum = 0;
+		}
+	}
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.GetComponent<Bullet>() != null)
+		{
+			Bullet bullet = other.GetComponent<Bullet>();
+			if (other.GetComponent<Bullet>().teamNum != playerId)
+			{
+				myScale.x -= scaleLoss;	
+				transform.localScale = new Vector3(myScale.x, myScale.y, myScale.z);
+				Destroy(other.gameObject);
+				if (myScale.x <= 0)
+				{
+ 					transform.position = spawnPos;
+					transform.localScale = originalScale;
+				}
+			}
+		}
+		
+		if (other.GetComponent<Enemy>() != null)
+		{
+			Enemy bullet = other.GetComponent<Enemy>();
+			if (other.GetComponent<Enemy>().teamNum != playerId)
+			{
+				myScale.x -= scaleLoss;	
+				transform.localScale = new Vector3(myScale.x, myScale.y, myScale.z);
+				Destroy(other.gameObject);
+				if (myScale.x <= 0)
+				{
+					transform.position = spawnPos;
+					transform.localScale = originalScale;
+				}
+			}
 		}
 	}
 
