@@ -55,7 +55,7 @@ Transform:
   m_GameObject: {fileID: 1762543248039798}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.38, y: 4.68, z: 0}
-  m_LocalScale: {x: 0.67, y: 0.22317076, z: 1.1}
+  m_LocalScale: {x: 0.67, y: 0.22317076, z: 1.5}
   m_Children:
   - {fileID: 4653134741890600}
   m_Father: {fileID: 0}
@@ -195,6 +195,6 @@ MonoBehaviour:
   gunCooldown: 0.5
   gunTimer: 0
   mats:
-  - {fileID: 2100000, guid: 837d621d853a9cf4da523bfb78893da4, type: 2}
-  - {fileID: 2100000, guid: ffeb51f66b68b8a4ca66ea0cceceb526, type: 2}
+  - {fileID: 2100000, guid: f6881b2f2b3e0434dbd3f2452191429f, type: 2}
+  - {fileID: 2100000, guid: 8b44e6392c393a8459c8adedd282dfdf, type: 2}
   moveState: 1

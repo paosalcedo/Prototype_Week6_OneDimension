@@ -212,21 +212,6 @@ public class LinePlayer : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.GetComponent<Bullet>() != null)
-		{
-			Bullet bullet = other.GetComponent<Bullet>();
-			if (other.GetComponent<Bullet>().teamNum != playerId)
-			{
-				myScale.x -= scaleLoss;	
-				transform.localScale = new Vector3(myScale.x, myScale.y, myScale.z);
-				Destroy(other.gameObject);
-				if (myScale.x <= 0)
-				{
- 					transform.position = spawnPos;
-					transform.localScale = originalScale;
-				}
-			}
-		}
 		
 		if (other.GetComponent<Enemy>() != null)
 		{
@@ -242,8 +227,27 @@ public class LinePlayer : MonoBehaviour
 					transform.localScale = originalScale;
 				}
 			}
-		}
+		}	
 	}
 
+	private void OnCollisionEnter(Collision other)
+	{
+		if (other.gameObject.GetComponent<Bullet>() != null)
+		{
+			Bullet bullet = other.gameObject.GetComponent<Bullet>();
+			if (other.gameObject.GetComponent<Bullet>().teamNum != playerId)
+			{
+				myScale.x -= scaleLoss;	
+				transform.localScale = new Vector3(myScale.x, myScale.y, myScale.z);
+				Debug.Log("player's bullet hit you!");
+//				Destroy(other.gameObject);
+				if (myScale.x <= 0)
+				{
+					transform.position = spawnPos;
+					transform.localScale = originalScale;
+				}
+			}
+		}
+	}
 }
 
