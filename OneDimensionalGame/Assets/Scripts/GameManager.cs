@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
 			//pink wins
 			t += Time.deltaTime;
 			myCam.transform.DOMove(pinkPlayer.transform.position+Vector3.back, 1f, false);
-			myCam.orthographicSize = Mathf.Lerp(9.6f, 1f, t);
+			myCam.orthographicSize = Mathf.Lerp(9.6f, 1.25f, t);
 			winText.enabled = true;
 //			DOTween.KillAll(false);
 
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
 			//blue wins
 			t += Time.deltaTime;
 			myCam.transform.DOMove(bluePlayer.transform.position + Vector3.back, 1f, false);		
-			myCam.orthographicSize = Mathf.Lerp(9.6f, 1f, t);
+			myCam.orthographicSize = Mathf.Lerp(9.6f, 1.25f, t);
 			winText.enabled = true;
 //			DOTween.KillAll(false);
 
