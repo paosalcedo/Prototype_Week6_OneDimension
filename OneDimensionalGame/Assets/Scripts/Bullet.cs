@@ -21,10 +21,12 @@ public class Bullet : MonoBehaviour
 		if (teamNum == 0)
 		{
 			myTeam = Team.Left;
+			gameObject.layer = 14;
 		}
 		else
 		{
 			myTeam = Team.Right;
+			gameObject.layer = 15;
 		}
 	}
 	
