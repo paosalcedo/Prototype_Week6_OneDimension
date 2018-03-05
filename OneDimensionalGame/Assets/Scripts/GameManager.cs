@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private Text winText;
 	[SerializeField] private Text[] introTexts;
 	[SerializeField] private Text controlsText;
+	public Text blueRespawnTimeText;
+	public Text pinkRespawnTimeText;
 	[SerializeField]Camera myCam;
 	public static LinePlayer bluePlayer;
 	public static LinePlayer pinkPlayer;

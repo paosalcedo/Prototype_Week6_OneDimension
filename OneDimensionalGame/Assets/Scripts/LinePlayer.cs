@@ -6,6 +6,7 @@ using DG.Tweening;
 using UnityEngine;
 using Rewired;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LinePlayer : MonoBehaviour
 {
@@ -13,8 +14,11 @@ public class LinePlayer : MonoBehaviour
 	public int playerId;
 	[SerializeField] private float health;
 	[SerializeField] private float speed;
-	private float scaleLoss;
+	[SerializeField] private float firingScale;
 	[SerializeField] private Vector3 myScale;
+	[SerializeField]private float respawnTime;
+ 	[SerializeField] private float respawnTimer;
+	private float scaleLoss;
 	private Vector3 originalScale;
 	private Vector3 spawnPos;
 
@@ -45,6 +49,7 @@ public class LinePlayer : MonoBehaviour
 
  	void Start()
 	 {
+		 gameManager = FindObjectOfType<GameManager>();
 		 tweenIsActive = false;
 		if (playerId == 0)
 		{
@@ -73,8 +78,37 @@ public class LinePlayer : MonoBehaviour
 	{
 		if (!GameManager.thereIsAWinner)
 		{
-			GetInput();
-			ProcessInput();
+			if (!imDead)
+			{
+				GetInput();
+				ProcessInput();
+			}
+			else
+			{
+				if (playerId == 0)
+				{
+					respawnTimer -= Time.deltaTime;
+					gameManager.blueRespawnTimeText.enabled = true;
+					gameManager.blueRespawnTimeText.text = respawnTimer.ToString("F0");
+					if (respawnTimer <= 0)
+					{
+						gameManager.blueRespawnTimeText.enabled = false;
+						respawnTimer = respawnTime;
+					}					
+				}
+				else if(playerId == 1)
+				{
+					respawnTimer -= Time.deltaTime;
+					gameManager.pinkRespawnTimeText.enabled = true;
+					gameManager.pinkRespawnTimeText.text = respawnTimer.ToString("F0");
+					if (respawnTimer <= 0)
+					{
+						gameManager.pinkRespawnTimeText.enabled = false;
+						respawnTimer = respawnTime;
+					}						
+				}
+			}
+
 			if (Input.GetKeyDown(KeyCode.R))
 			{
 				SceneManager.LoadScene("main");
@@ -107,47 +141,42 @@ public class LinePlayer : MonoBehaviour
 	void ProcessInput()
 	{
 
-		if (hasFired)
-		{
-			gunTimer += Time.deltaTime;
-			if (gunTimer >= gunCooldown)
-			{
-				hasFired = false;
-			}
-		}
+//		if (hasFired)
+//		{
+//			gunTimer += Time.deltaTime;
+//			if (gunTimer >= gunCooldown)
+//			{
+//				hasFired = false;
+//			}
+//		}
 
 		if (playerId == 0)
 		{
 			transform.Translate(moveVector * speed * Time.deltaTime);
 			if (i_action)
 			{
-	//			Debug.Log(light.spotAngle);
-//				light.spotAngle = 12;
-//				StartCoroutine(ReturnToNormalLength());
 				if (moveVector.x >= 0 && !hasFired)
 				{
 					SpawnBullet(1);
-					myScale.x *= 1.5f;
+					myScale.x *= firingScale;
 					transform.localScale = new Vector3(myScale.x, transform.localScale.y, transform.localScale.z);
 					Sequence sequence = DOTween.Sequence();
 					sequence.OnPlay(() => SetTweenToActive());
-					sequence.Append(transform.DOScaleX(myScale.x/1.5f, 0.5f));
+					sequence.Append(transform.DOScaleX(myScale.x/firingScale, 0.5f));
 					sequence.OnComplete(() => SetTweenToInactive());
 					hasFired = true;
-					gunTimer = 0;
-				}
+ 				}
 				else if(moveVector.x < 0 && !hasFired)
 				{
 					SpawnBullet(-1);
-					myScale.x *= 1.5f;
+					myScale.x *= firingScale;
 					transform.localScale = new Vector3(myScale.x, transform.localScale.y, transform.localScale.z);
 					Sequence sequence = DOTween.Sequence();
 					sequence.OnPlay(() => SetTweenToActive());
-					sequence.Append(transform.DOScaleX(myScale.x/1.5f, 0.5f));
+					sequence.Append(transform.DOScaleX(myScale.x/firingScale, 0.5f));
 					sequence.OnComplete(() => SetTweenToInactive());
 					hasFired = true;
-					gunTimer = 0;
-				}
+ 				}
 			}			
 		}
 
@@ -162,11 +191,11 @@ public class LinePlayer : MonoBehaviour
 				if (moveVector.x <= 0 && !hasFired && !tweenIsActive)
 				{
 					SpawnBullet(-1);
- 					myScale.x *= 1.5f;
+ 					myScale.x *= firingScale;
 					transform.localScale = new Vector3(myScale.x, transform.localScale.y, transform.localScale.z);
 					Sequence sequence = DOTween.Sequence();
 					sequence.OnPlay(() => SetTweenToActive());
-					sequence.Append(transform.DOScaleX(myScale.x/1.5f, 0.5f));
+					sequence.Append(transform.DOScaleX(myScale.x/firingScale, 0.5f));
 					sequence.OnComplete(() => SetTweenToInactive());
 					hasFired = true;
 					gunTimer = 0;
@@ -174,11 +203,11 @@ public class LinePlayer : MonoBehaviour
 				else if(moveVector.x > 0 && !hasFired && !tweenIsActive)
 				{
 					SpawnBullet(1);
-					myScale.x *= 1.5f;
+					myScale.x *= firingScale;
 					transform.localScale = new Vector3(myScale.x, transform.localScale.y, transform.localScale.z);
 					Sequence sequence = DOTween.Sequence();
 					sequence.OnPlay(() => SetTweenToActive());
-					sequence.Append(transform.DOScaleX(myScale.x/1.5f, 0.5f));
+					sequence.Append(transform.DOScaleX(myScale.x/firingScale, 0.5f));
 					sequence.OnComplete(() => SetTweenToInactive());
 					hasFired = true;
 					gunTimer = 0;
@@ -228,17 +257,16 @@ public class LinePlayer : MonoBehaviour
 				myScale.x -= scaleLoss;	
 				transform.localScale = new Vector3(myScale.x, myScale.y, myScale.z);
 				Destroy(other.gameObject);
-				if (myScale.x <= 0)
+				if (myScale.x <= 0 && !imDead)
 				{
-					transform.position = spawnPos;
-					transform.localScale = originalScale;
-					myScale.x = transform.localScale.x;
+					GetComponent<Collider>().enabled = false;
+					GetComponent<MeshRenderer>().enabled = false;
+					StartCoroutine(RespawnMe());
+					imDead = true;
 				}
 			}
 		}	
 	}
-
-	private bool hitTaken = false;
 
 	private void OnCollisionEnter(Collision other)
 	{
@@ -250,27 +278,48 @@ public class LinePlayer : MonoBehaviour
  				myScale.x -= scaleLoss;	
 				transform.localScale = new Vector3(myScale.x, myScale.y, myScale.z);
 				Destroy(other.gameObject);	
-				if (myScale.x <= 0)
+				if (myScale.x <= 0 && !imDead)
 				{
-					transform.position = spawnPos;
-					transform.localScale = originalScale;
-					myScale.x = transform.localScale.x;
+					GetComponent<Collider>().enabled = false;
+					GetComponent<MeshRenderer>().enabled = false;
+					StartCoroutine(RespawnMe());
+					imDead = true;
 				}
 			}
 		}
 	}
 
 	public bool tweenIsActive = false;
-
+	private bool imDead = false;
+	
 	private void SetTweenToInactive()
 	{
-		myScale.x = myScale.x / 1.5f;
+		myScale.x = myScale.x / firingScale;
+		hasFired = false;
 		tweenIsActive = false;
 	}
 
 	private void SetTweenToActive()
 	{
 		tweenIsActive = true;
+	}
+
+	IEnumerator RespawnMe()
+	{
+		yield return new WaitForSeconds(respawnTime);
+		GetComponent<Collider>().enabled = true;
+		GetComponent<MeshRenderer>().enabled = true;
+		transform.position = spawnPos;
+		transform.localScale = originalScale;
+		myScale.x = transform.localScale.x;
+		imDead = false;
+		if (playerId == 0)
+		{
+			gameManager.blueRespawnTimeText.enabled = false;
+		} else
+		{
+			gameManager.pinkRespawnTimeText.enabled = false;
+		}
 	}
 }
 

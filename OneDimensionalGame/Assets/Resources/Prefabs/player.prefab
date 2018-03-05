@@ -192,9 +192,13 @@ MonoBehaviour:
   playerId: 0
   health: 0
   speed: 5
+  firingScale: 1.75
+  respawnTime: 6
+  myScale: {x: 0, y: 0, z: 0}
   gunCooldown: 0.5
   gunTimer: 0
   mats:
   - {fileID: 2100000, guid: f6881b2f2b3e0434dbd3f2452191429f, type: 2}
   - {fileID: 2100000, guid: 8b44e6392c393a8459c8adedd282dfdf, type: 2}
   moveState: 1
+  tweenIsActive: 0
